@@ -1,83 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Hotel Booking Form</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Hotel Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <h2>Hotel Booking</h2>
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">✓</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Your reservation has been received. A confirmation email will be sent to you shortly.</p>
+    <div class="success-ref">Booking ID: <strong id="bookingId"></strong></div>
+    <div class="success-details" id="successDetails"></div>
+    <button class="btn-close" onclick="closeSuccess()">Back to Home</button>
+  </div>
+</div>
 
+<div class="wrapper">
+  <div class="badge"><span class="badge-dot"></span> Reservations Open</div>
+  <div class="header">
+    <h1>Book Your Stay</h1>
+    <p>Complete the form below and we'll confirm within 24 hours.</p>
+  </div>
+  <div class="card">
+    <div class="progress-bar">
+      <div class="progress-seg active" id="seg1"></div>
+      <div class="progress-seg" id="seg2"></div>
+      <div class="progress-seg" id="seg3"></div>
+    </div>
     <form id="bookingForm" novalidate>
 
-        <!-- Full Name -->
+      <!-- Step 1: Guest Info -->
+      <div class="section active" id="step1">
+        <div class="step-label">Step 1 of 3</div>
+        <div class="section-title">Guest Information</div>
         <div class="form-group">
-            <label for="fullname">Full Name</label>
-            <input type="text" id="fullname" name="fullname">
-            <small class="field-error" id="fullnameError"></small>
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" placeholder="e.g. Alex Johnson">
+          <small class="field-error" id="fullnameError"></small>
         </div>
-
-        <!-- Email -->
-        <div class="form-group">
+        <div class="row two">
+          <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email">
+            <input type="email" id="email" placeholder="you@email.com">
             <small class="field-error" id="emailError"></small>
-        </div>
-
-        <!-- Phone -->
-        <div class="form-group">
+          </div>
+          <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone">
+            <input type="tel" id="phone" placeholder="10-digit number">
             <small class="field-error" id="phoneError"></small>
+          </div>
         </div>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-primary" onclick="nextStep(1)">Continue →</button>
+        </div>
+      </div>
 
-        <!-- Check-in -->
-        <div class="form-group">
+      <!-- Step 2: Room + Dates -->
+      <div class="section" id="step2">
+        <div class="step-label">Step 2 of 3</div>
+        <div class="section-title">Choose Your Room</div>
+
+        <div class="room-cards">
+          <div class="room-card" onclick="selectRoom('Single', 1400)" id="card-Single">
+            <div class="room-icon">🛏️</div>
+            <div class="room-name">Single</div>
+            <div class="room-desc">Cozy room for solo travellers. Queen bed, city view.</div>
+            <div class="room-price">₹1,400 <span>/ night</span></div>
+          </div>
+          <div class="room-card" onclick="selectRoom('Double', 3000)" id="card-Double">
+            <div class="room-icon">🛏️🛏️</div>
+            <div class="room-name">Double</div>
+            <div class="room-desc">Spacious twin bed room, perfect for couples or friends.</div>
+            <div class="room-price">₹3,000 <span>/ night</span></div>
+          </div>
+          <div class="room-card" onclick="selectRoom('Suite', 7000)" id="card-Suite">
+            <div class="room-icon">✨</div>
+            <div class="room-name">Suite</div>
+            <div class="room-desc">Luxury suite with lounge area, jacuzzi & panoramic view.</div>
+            <div class="room-price">₹7,000 <span>/ night</span></div>
+          </div>
+        </div>
+        <small class="room-error" id="roomError"></small>
+
+        <div class="row two">
+          <div class="form-group">
             <label for="checkin">Check-in Date</label>
-            <input type="date" id="checkin" name="checkin">
+            <input type="date" id="checkin">
             <small class="field-error" id="checkinError"></small>
-        </div>
-
-        <!-- Check-out -->
-        <div class="form-group">
+          </div>
+          <div class="form-group">
             <label for="checkout">Check-out Date</label>
-            <input type="date" id="checkout" name="checkout">
+            <input type="date" id="checkout">
             <small class="field-error" id="checkoutError"></small>
+          </div>
         </div>
-
-        <!-- Room -->
+        <div class="form-group" style="margin-bottom:14px">
+          <label for="guests">Number of Guests</label>
+          <input type="number" id="guests" min="1" max="10" placeholder="1 – 10">
+          <small class="field-error" id="guestsError"></small>
+        </div>
         <div class="form-group">
-            <label for="room">Room Type</label>
-            <select id="room" name="room">
-                <option value="">Select Room Type</option>
-                <option value="single">Single</option>
-                <option value="double">Double</option>
-                <option value="suite">Suite</option>
-            </select>
-            <small class="field-error" id="roomError"></small>
+          <label for="requests">Special Requests <span class="optional">(optional)</span></label>
+          <textarea id="requests" placeholder="Dietary requirements, accessibility needs…"></textarea>
         </div>
-
-        <!-- Guests -->
-        <div class="form-group">
-            <label for="guests">Number of Guests</label>
-            <input type="number" id="guests" name="guests" min="1" max="10">
-            <small class="field-error" id="guestsError"></small>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
+          <button type="button" class="btn btn-primary" onclick="nextStep(2)">Review →</button>
         </div>
+      </div>
 
-        <!-- Requests -->
-        <div class="form-group">
-            <label for="requests">Special Requests (Optional)</label>
-            <textarea id="requests" name="requests" rows="3"></textarea>
+      <!-- Step 3: Review -->
+      <div class="section" id="step3">
+        <div class="step-label">Step 3 of 3</div>
+        <div class="section-title">Review & Confirm</div>
+        <div class="summary" id="summaryBlock"></div>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-ghost" onclick="prevStep(3)">← Edit</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Confirm Booking</button>
         </div>
-
-        <p class="success" id="successMsg"></p>
-
-        <button type="submit" id="submitBtn">Book Now</button>
+      </div>
 
     </form>
+  </div>
 </div>
 
 <script src="script.js"></script>
