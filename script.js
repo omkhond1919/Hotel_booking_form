@@ -1,8 +1,8 @@
-// ─── State ───────────────────────────────────────────────────────────────────
+
 let selectedRoom = null;
 let roomPrice    = 0;
 
-// ─── Date Setup ──────────────────────────────────────────────────────────────
+
 const today    = new Date().toISOString().split("T")[0];
 const checkin  = document.getElementById("checkin");
 const checkout = document.getElementById("checkout");
@@ -15,7 +15,7 @@ checkin.addEventListener("change", () => {
   checkout.setAttribute("min", checkin.value);
 });
 
-// ─── Room Selection ───────────────────────────────────────────────────────────
+
 function selectRoom(name, price) {
   selectedRoom = name;
   roomPrice    = price;
@@ -24,7 +24,7 @@ function selectRoom(name, price) {
   document.getElementById("roomError").textContent = "";
 }
 
-// ─── Error Helpers ────────────────────────────────────────────────────────────
+
 function clearErrors(...ids) {
   ids.forEach(id => {
     document.getElementById(id)?.classList.remove("input-error");
@@ -40,7 +40,7 @@ function setError(id, msg) {
   return true;
 }
 
-// ─── Validation ───────────────────────────────────────────────────────────────
+
 function validateStep(step) {
   let hasError = false;
 
@@ -74,7 +74,7 @@ function validateStep(step) {
   return !hasError;
 }
 
-// ─── Step Navigation ──────────────────────────────────────────────────────────
+
 function goToStep(n) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.getElementById("step" + n).classList.add("active");
@@ -97,7 +97,7 @@ function prevStep(from) {
   goToStep(from - 1);
 }
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
+
 function fmt(d) {
   if (!d) return "—";
   return new Date(d + "T00:00:00").toLocaleDateString("en-US", {
@@ -115,7 +115,7 @@ function genBookingId() {
   return "HB-" + Math.random().toString(36).substring(2, 6).toUpperCase() + "-" + Date.now().toString().slice(-4);
 }
 
-// ─── Summary Builder ──────────────────────────────────────────────────────────
+
 function buildSummary() {
   const nights = nightCount();
   const total  = nights * roomPrice;
@@ -143,7 +143,7 @@ function buildSummary() {
      </div>`;
 }
 
-// ─── Success Overlay ──────────────────────────────────────────────────────────
+
 function closeSuccess() {
   document.getElementById("successOverlay").classList.remove("visible");
   selectedRoom = null;
@@ -152,7 +152,7 @@ function closeSuccess() {
   goToStep(1);
 }
 
-// ─── Form Submit ──────────────────────────────────────────────────────────────
+
 document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
